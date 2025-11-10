@@ -6,6 +6,7 @@ struct Lists {
     output_list: String,
 }
 
+//instatiate a Lists struct
 impl Lists {
     fn new() -> Lists {
         let lists: Lists = Lists { 
