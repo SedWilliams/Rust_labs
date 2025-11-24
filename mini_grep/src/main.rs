@@ -1,6 +1,7 @@
 use std::env;
 use std::fs;
 use std::process;
+use std::error::Error;
 
 //TODO update readme about what is held at the 0th index of args vector (its debug info)
 //TODO implement tuple struct instead
@@ -27,7 +28,7 @@ impl ArgsFormatter {
         if args.len() < 3 {
             return Err("not enough arguments");
         }
-        
+
         Ok(
             ArgsFormatter {
                 //these are both one because the 0th index is the program name
@@ -54,7 +55,8 @@ fn main() {
 
     println!("Reading from file: {}", &args.filename);
     println!("Searching for expression: {}", &args.expression);
-
+    
+    //if Err(e) == run(&args) is true -> body
     if let Err(e) = run(&args) {
         println!("Application error: {e} ");
         process::exit(1);
@@ -63,7 +65,7 @@ fn main() {
 }
 
 
-pub fn run(args: &ArgsFormatter) -> Result<(), Box<dyn Error>> {
+fn run(args: &ArgsFormatter) -> Result<(), Box<dyn Error>> {
     
     /***************************************************************
      * Read File
@@ -71,10 +73,10 @@ pub fn run(args: &ArgsFormatter) -> Result<(), Box<dyn Error>> {
      * read_to_string returns a Result enum that needs to be handled
      * with match or unwrap
      *****************************************************************/
-    let file_content = fs::read_to_string(&args.filename).expect("Could not read file to string")?;
-    println!("File Content:\n{}", &file_content)?;
+    let file_content = fs::read_to_string(&args.filename)?;
+    println!("File Content:\n{}", &file_content);
 
-    OK(())
+    Ok(())
 
 }
 
